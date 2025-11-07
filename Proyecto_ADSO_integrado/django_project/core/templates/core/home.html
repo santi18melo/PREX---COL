@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inicio - Sistema de Pedidos{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-4">Bienvenido al Sistema de Pedidos</h1>
+            {% if user.is_authenticated %}
+                <p class="lead">¡Hola {{ user.username }}! ¿Qué deseas hacer hoy?</p>
+            {% else %}
+                <p class="lead">Inicia sesión o regístrate para comenzar a realizar pedidos</p>
+                <div class="mt-4">
+                    <a href="{% url 'login' %}" class="btn btn-primary me-2">Iniciar Sesión</a>
+                    <a href="{% url 'registro' %}" class="btn btn-outline-primary">Registrarse</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if user.is_authenticated and not user.is_staff %}
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Nuevo Pedido</h5>
+                    <p class="card-text">Realiza un nuevo pedido de productos</p>
+                    <a href="#" class="btn btn-primary">Crear Pedido</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Mis Pedidos</h5>
+                    <p class="card-text">Ver el historial de tus pedidos</p>
+                    <a href="{% url 'perfil' %}" class="btn btn-primary">Ver Pedidos</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Mi Perfil</h5>
+                    <p class="card-text">Gestiona tu información personal</p>
+                    <a href="{% url 'perfil' %}" class="btn btn-primary">Ver Perfil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Últimos Pedidos</h5>
+                </div>
+                <div class="card-body">
+                    {% if user.pedidos.all %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
+                                        <th>Total</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pedido in user.pedidos.all|slice:":5" %}
+                                    <tr>
+                                        <td>#{{ pedido.id }}</td>
+                                        <td>{{ pedido.fecha_pedido|date:"d/m/Y" }}</td>
+                                        <td>{{ pedido.get_estado_display }}</td>
+                                        <td>${{ pedido.total }}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-info">Detalles</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-center mb-0">No tienes pedidos realizados aún.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

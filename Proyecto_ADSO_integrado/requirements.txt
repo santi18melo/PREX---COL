@@ -1,0 +1,31 @@
+# ==========================
+# Requisitos base de Django
+# ==========================
+Django==4.2.11
+djangorestframework==3.15.2
+django-cors-headers==4.3.1
+python-decouple==3.8
+
+# ==========================
+# Autenticación y seguridad
+# ==========================
+djangorestframework-simplejwt==5.3.1
+PyJWT==2.9.0
+
+# ==========================
+# Conexión a PostgreSQL
+# ==========================
+psycopg2-binary==2.9.9
+
+# ==========================
+# Utilidades y extensiones
+# ==========================
+Pillow==10.2.0
+requests==2.32.3
+gunicorn==23.0.0
+whitenoise==6.7.0
+
+# ==========================
+# Para desarrollo y depuración
+# ==========================
+django-debug-toolbar==4.3.0

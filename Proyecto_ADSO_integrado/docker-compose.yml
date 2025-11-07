@@ -1,0 +1,39 @@
+
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: adso_db
+      POSTGRES_USER: adso_user
+      POSTGRES_PASSWORD: adso_pass
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  django:
+    build: ./django_project
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./django_project:/app
+    environment:
+      - POSTGRES_DB=adso_db
+      - POSTGRES_USER=adso_user
+      - POSTGRES_PASSWORD=adso_pass
+      - POSTGRES_HOST=db
+      - DJANGO_DEBUG=True
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  laravel:
+    image: php:8.1-cli
+    working_dir: /var/www
+    volumes:
+      - ./laravel_project:/var/www
+    command: tail -f /dev/null
+
+volumes:
+  db_data:

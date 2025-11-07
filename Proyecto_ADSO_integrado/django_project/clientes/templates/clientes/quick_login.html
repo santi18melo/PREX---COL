@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Iniciar Sesión Rápido{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body p-5">
+                    <h1 class="text-center mb-4">Bienvenido</h1>
+                    
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <form method="post" class="form-quick-login">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.username.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.password.label_tag }}
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.password.errors }}
+                            </div>
+                            {% endif %}
+                            <div class="text-end mt-1">
+                                <a href="{% url 'password_reset' %}" class="text-decoration-none">
+                                    ¿Olvidaste tu contraseña?
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mb-4 form-check">
+                            {{ form.remember_me }}
+                            {{ form.remember_me.label_tag }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Iniciar Sesión
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <p>¿No tienes una cuenta?</p>
+                        <a href="{% url 'registro' %}" class="btn btn-outline-primary">
+                            Crear cuenta nueva
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Accesos rápidos de prueba</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-grid">
+                                <button onclick="fillForm('cliente', 'cliente123')" class="btn btn-outline-secondary btn-sm">
+                                    Cliente Demo
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-grid">
+                                <button onclick="fillForm('admin', 'admin123')" class="btn btn-outline-danger btn-sm">
+                                    Admin Demo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.form-quick-login label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-quick-login .form-control {
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.form-quick-login .btn-lg {
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function fillForm(username, password) {
+    document.querySelector('#id_username').value = username;
+    document.querySelector('#id_password').value = password;
+}
+</script>
+{% endblock %}
